@@ -117,7 +117,7 @@ module.exports = class PetController {
             return
         }
 
-        // check if pet exists
+        //check if pet exists
         const pet = await Pet.findOne({ _id: id })
 
         if (!pet){
