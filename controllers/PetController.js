@@ -231,15 +231,12 @@ module.exports = class PetController {
             updatedData.color = color
         }
 
-        if(images.length === 0){
-            res.status(422).json({ message: "A imagem é obrigatória!"})
-            return
-        }else {
+        if (images.length > 0) {
             updatedData.images = []
             images.map((image) => {
                 updatedData.images.push(image.filename)
             })
-        }
+        } 
 
         await Pet.findByIdAndUpdate(id, updatedData)
 
@@ -271,12 +268,15 @@ module.exports = class PetController {
         }
 
         //check if user has already scheduled a visit
-        if(pet.adopter._id.equals(user._id)){
-            res.status(422).json({
+        if (pet.adopter) {
+            if (pet.adopter._id.equals(user._id)) {
+              res.status(422).json({
                 message: 'Você já agendou uma visita para este Pet!',
-            })
-            return
-        }
+              })
+              return
+            }
+          }
+      
 
         // add user to pet
         pet.adopter = {
